@@ -10,7 +10,7 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'saves a new answer in the database' do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to change(Answer, :count).by(1)
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to change(question.answers, :count).by(1)
       end
 
       it 'renders create' do
@@ -122,6 +122,62 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #best' do
+    context 'for the author of the question' do
+      before { login(question.user) }
+
+      it 'assigns the requested answer to @answer' do
+        patch :best, params: { id: answer }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :best, params: { id: answer }, format: :js
+        answer.reload
+
+        expect(answer).to be_best
+      end
+
+      it 'renders best' do
+        patch :best, params: { id: answer }, format: :js
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'for not the author of the question' do
+      let(:not_author) { create(:user) }
+
+      before do
+        login(not_author)
+        patch :best, params: { id: answer, answer: { best: true } }
+      end
+
+      it 'does not change answer' do
+        answer.reload
+
+        expect(answer).to_not be_best
+      end
+
+      it 'redirects to question' do
+        expect(response).to redirect_to answer.question
+      end
+    end
+
+    context 'for unauthenticated user' do
+      before { patch :best, params: { id: answer, answer: { best: true } } }
+
+      it 'does not change answer' do
+        answer.reload
+
+        expect(answer).to_not be_best
+      end
+
+      it 'redirects to sign up page' do
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     let!(:question) { create(:question) }
     let!(:answer) { create(:answer, question: question, user: user) }
@@ -130,12 +186,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(question.answers, :count).by(-1)
       end
 
-      it 'redirects to question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to answer.question
+      it 'renders destroy' do
+        delete :destroy, params: { id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
 
@@ -145,7 +201,7 @@ RSpec.describe AnswersController, type: :controller do
       before { login(not_author) }
 
       it "don't delete the answer" do
-        expect { delete :destroy, params: { id: answer } }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
       it 'redirects to question' do
