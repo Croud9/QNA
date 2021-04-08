@@ -1,10 +1,7 @@
 - unless answer.errors.present?
   div class="answer" id="answer-#{answer.id}"
     p= answer.body
-
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        = link_to file.filename.to_s, url_for(file)
+    = render 'shared/files', resource: answer
 
     - if current_user&.is_author?(answer.question)
       - unless answer.best?
@@ -19,7 +16,11 @@
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false  do |f|
-      = f.label :body
-      = f.text_area :body
+      p
+        = f.label :body
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
 
-      = f.submit 'Save'
+        = f.submit 'Save'
