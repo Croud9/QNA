@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  include_examples 'link association'
+
   it { should belong_to :question }
   it { should belong_to :user }
-  it { should have_many(:links).dependent(:destroy) }
 
   it { should have_db_index :question_id }
   it { should validate_presence_of :body }
-
-  it { should accept_nested_attributes_for :links }
 
   it 'have many attached files' do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
@@ -16,6 +15,7 @@ RSpec.describe Answer, type: :model do
 
   let(:question) { create(:question) }
   let!(:best_answer) { create(:answer, question: question, best: true) }
+  let!(:award) { create(:award, question: question, user: best_answer.user) }
   let(:best_answer2) { create(:answer, question: question, best: true) }
   let!(:answer) { create(:answer, question: question) }
 
@@ -36,9 +36,18 @@ RSpec.describe Answer, type: :model do
       expect(answer).to be_best
     end
 
+    it 'gets author of answer award' do
+      expect(answer.user.awards).to include award
+    end
+
     it 'makes best_answer not the best' do
       best_answer.reload
       expect(best_answer).to_not be_best
+    end
+
+    it 'takes from author of answer award' do
+      best_answer.user.reload
+      expect(best_answer.user.awards).to_not include award
     end
   end
 
