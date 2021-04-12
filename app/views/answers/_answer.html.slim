@@ -2,7 +2,7 @@
   div class="answer" id="answer-#{answer.id}"
     p= answer.body
     = render 'shared/files', resource: answer
-    = render 'shared/links', resource: answer 
+    = render 'shared/links', resource: answer
 
     - if current_user&.is_author?(answer.question)
       - unless answer.best?
@@ -23,5 +23,12 @@
       p
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
+
+      p Links:
+      p
+        = f.fields_for :links do |l|
+          = render 'shared/link_fields', f: l
+        .link
+          = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
 
         = f.submit 'Save'
