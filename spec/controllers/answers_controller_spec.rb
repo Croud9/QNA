@@ -26,6 +26,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid),
                                          question_id: question }, format: :js }.to_not change(question.answers, :count)
       end
+    end
 
       it 'renders create' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js
