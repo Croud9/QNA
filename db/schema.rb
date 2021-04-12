@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2021_04_08_133023) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
+
     t.boolean "best", default: false, null: false
     t.index ["question_id", "best"], name: "index_answers_on_question_id_and_best", unique: true, where: "(best = true)"
     t.index ["question_id"], name: "index_answers_on_question_id"
