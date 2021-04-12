@@ -32,7 +32,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns new link for answer' do
       expect(assigns(:answer).links.first).to be_a_new(Link)
-    end    
+    end
 
     it 'renders show view' do
       expect(response).to render_template :show
@@ -115,19 +115,20 @@ RSpec.describe QuestionsController, type: :controller do
       before { login(user) }
 
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
-      end
+        expect { post :create, format: :js,
+                 params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
 
 
       it 're-renders new view' do
-        post :create, params: { question: attributes_for(:question, :invalid) }
-        expect(response).to render_template :new
+        post :create, params: { question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :create
       end
     end
 
     context 'for unauthenticated user' do
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
+        expect { post :create, format: :js,
+                 params: { question: attributes_for(:question) } }.to_not change(Question, :count)
       end
 
       it 'redirects to sign up page' do
