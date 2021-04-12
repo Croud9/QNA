@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2021_04_06_164616) do
 
   # These are extensions that must be enabled in order to support this database
@@ -21,6 +22,7 @@ ActiveRecord::Schema.define(version: 2021_04_06_164616) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
+
     t.boolean "best", default: false, null: false
     t.index ["question_id", "best"], name: "index_answers_on_question_id_and_best", unique: true, where: "(best = true)"
     t.index ["question_id"], name: "index_answers_on_question_id"

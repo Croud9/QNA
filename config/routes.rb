@@ -6,6 +6,6 @@ Rails.application.routes.draw do
       patch :best, on: :member
     end
   end
-
+  
   root to: "questions#index"
 end
