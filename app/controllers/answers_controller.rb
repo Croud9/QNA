@@ -6,7 +6,7 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i(show edit update destroy best)
   before_action :check_author, only: %i(update destroy)
   before_action :check_question_author, only: %i(best)
-
+  
   def new
     @answer = Answer.new
   end
@@ -35,6 +35,11 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
+  end
+
+  def destroy
+    @answer.destroy
+    redirect_to @answer.question, notice: 'Answer succesfully deleted.'
   end
 
   private
