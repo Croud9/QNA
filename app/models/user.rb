@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :answers
   has_many :awards
   has_many :votes
+  has_many :comments
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
@@ -13,5 +14,5 @@ class User < ApplicationRecord
 
   def voted?(resource)
     votes.where(votable: resource).present?
-  end  
+  end
 end

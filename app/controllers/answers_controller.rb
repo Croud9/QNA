@@ -1,11 +1,11 @@
 class AnswersController < ApplicationController
-  include Voted
-
   before_action :authenticate_user!, except: %i(show)
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i(show edit update destroy best)
   before_action :check_author, only: %i(update destroy)
   before_action :check_question_author, only: %i(best)
+
+  include Voted
 
   after_action :publish_answer, only: %i(create)
 
