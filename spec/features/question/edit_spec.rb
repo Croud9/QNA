@@ -20,7 +20,7 @@ feature 'User can edit question' do
         expect(page).to_not have_content question.body
         expect(page).to have_content 'edited question title'
         expect(page).to have_content 'edited question body'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector '#question_body'
       end
     end
 
@@ -49,7 +49,7 @@ feature 'User can edit question' do
       visit question_path(question)
 
       expect(page).to_not have_link 'rails_helper.rb'
-      expect(page).to_not have_link 'spec_helper.rb'      
+      expect(page).to_not have_link 'spec_helper.rb'
 
       click_on 'Edit question'
 
@@ -59,7 +59,7 @@ feature 'User can edit question' do
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector '#question_body'
       end
     end
 
