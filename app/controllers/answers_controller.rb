@@ -2,12 +2,12 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i(show)
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i(show edit update destroy best)
-  before_action :check_author, only: %i(update destroy)
-  before_action :check_question_author, only: %i(best)
 
   include Voted
 
   after_action :publish_answer, only: %i(create)
+
+  authorize_resource
 
   def new
     @answer = Answer.new
@@ -51,15 +51,6 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])
-  end
-
-  def check_author
-    redirect_to @answer.question, notice: 'Only author can do it' unless current_user.is_author?(@answer)
-  end
-
-  def check_question_author
-    @question = @answer.question
-    redirect_to @question, notice: 'Only author can do it' unless current_user.is_author?(@question)
   end
 
   def publish_answer
