@@ -39,6 +39,11 @@ class AnswersController < ApplicationController
     @answer.destroy
   end
 
+  def destroy
+    @answer.destroy
+    redirect_to @answer.question, notice: 'Answer succesfully deleted.'
+  end
+
   private
 
   def find_question
