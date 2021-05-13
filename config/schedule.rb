@@ -13,7 +13,7 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 4.days do
+every 1.days do
   runner "Services::DailyDigest.new.send_digest"
 end
 
