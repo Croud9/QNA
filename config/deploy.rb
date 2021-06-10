@@ -15,14 +15,14 @@ append :linked_files, "config/database.yml", 'config/master.key'
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", 'storage'
 
 
-before "deploy:assets:precompile", "deploy:xx_bin"
-namespace :deploy do
-  desc "Run rake yarn install"
-  task :xx_bin do
-    on roles(:web) do
-      within release_path do
-        execute "cd #{release_path}/bin && chmod u+x *"
-      end
-    end
-  end
-end
+# before "deploy:assets:precompile", "deploy:xx_bin"
+# namespace :deploy do
+#   desc "Run rake yarn install"
+#   task :xx_bin do
+#     on roles(:web) do
+#       within release_path do
+#         execute "cd #{release_path}/bin && chmod u+x *"
+#       end
+#     end
+#   end
+# end
