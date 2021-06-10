@@ -45,3 +45,7 @@ dump.rdb
 
 config/*.sphinx.conf
 db/sphinx
+
+.nvm
+src
+dist
