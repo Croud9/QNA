@@ -39,7 +39,6 @@ gem 'cocoon'
 gem 'validate_url'
 
 gem 'gon'
-gem 'skim'
 
 gem 'cancancan'
 
