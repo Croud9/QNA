@@ -17,4 +17,7 @@ every 1.days do
   runner "Services::DailyDigest.new.send_digest"
 end
 
+every 30.minutes do
+  runner "ts:index"
+end
 # Learn more: http://github.com/javan/whenever
