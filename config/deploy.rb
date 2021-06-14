@@ -14,7 +14,7 @@ append :linked_files, "config/database.yml", 'config/master.key'
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", 'storage'
 
-
+after 'deploy:publishing', 'unicorn:restart' 
 # before "deploy:assets:precompile", "deploy:xx_bin"
 # namespace :deploy do
 #   desc "Run rake yarn install"
